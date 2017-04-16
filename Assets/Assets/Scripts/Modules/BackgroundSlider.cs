@@ -13,10 +13,12 @@ public class BackgroundSlider : MonoBehaviour {
 	}
 
 	void Update () {
-		float x = Mathf.Repeat (Time.time * 0.1f * scrollSpeed, 1);
-		Rect offset = savedOffset;
-		offset.x = x;
-		GetComponent<RawImage>().uvRect = offset;
+		if (GameManager.simulate) {
+			float x = Mathf.Repeat (Time.time * 0.1f * scrollSpeed, 1);
+			Rect offset = savedOffset;
+			offset.x = x;
+			GetComponent<RawImage> ().uvRect = offset;
+		}
 	}
 
 	void OnDisable () {
