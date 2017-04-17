@@ -66,10 +66,10 @@ public class ObstaclesManager : MonoBehaviour {
 
 		startX += extraOffset;
 
-		Cycle:
-
 		if (maxHeight > 9)
 			maxHeight = 9;
+
+		Cycle:
 
 		int height = Random.Range (1, maxHeight);
 
@@ -82,13 +82,17 @@ public class ObstaclesManager : MonoBehaviour {
 
 		maxDist -= extraOffset;
 
-		if (maxDist < 2) {
+		if (lastObstacle != null && lastObstacle != null && lastObstacle.spike)
+			minDist = 2 + lastObstacle.height;
+
+		if (maxDist < 2 || maxDist < minDist) {
 			maxHeight = 2;
 			extraOffset = 0;
 			goto Cycle;
 		}
 
 		int amp = Random.Range (minDist, maxDist);
+
 		int width = 1;
 
 		if (Random.Range (1, 600) % 2 == 0)
@@ -106,28 +110,13 @@ public class ObstaclesManager : MonoBehaviour {
 			for (int h = 0; h < height; h++)
 				if (spikes && width > 1 && (height > 1 || width > 3) && h == height - 1)
 					if (w == width - 1)
-						SpawnTopSpikes (startX, width, h);
+						SpawnTopSpikes (startX + amp, width, h);
 					else
 						continue;
 				else
 					Spawn (spikes && h == height - 1, startX + amp, w, h, height);
 
 		extraOffset = 0;
-	}
-
-	public void SpawnObstacle(int amp, int width, int height, bool spikes = false) {
-		float startX = (lastObstacle == null || lastObstacle.obstacle == null) ?
-			blockPrefab.transform.localPosition.x + offset : lastObstacle.obstacle.transform.localPosition.x + amp;
-
-		for (int w = 0; w < width; w++)
-			for (int h = 0; h < height; h++)
-				if (spikes && width > 1 && (height > 1 || width > 3) && h == height - 1)
-					if (w == width - 1)
-						SpawnTopSpikes (startX, width, h);
-					else
-						continue;
-				else
-					Spawn (spikes && h == height - 1, startX + amp, w, h, height);
 	}
 
 	void SpawnTopSpikes(float startX, int width, int h) {
