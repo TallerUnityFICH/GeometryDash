@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour {
 	public void GameOver() {
 		simulate = false;
 		GetComponent<PlayerController> ().anim.Stop ();
+		Cursor.visible = true;
 		loser = true;
 		print ("GameOver");
 	}
