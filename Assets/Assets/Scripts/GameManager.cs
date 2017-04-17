@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -19,8 +20,19 @@ public class GameManager : MonoBehaviour {
 
 	public void GameOver() {
 		simulate = false;
-		GetComponent<PlayerController> ().anim.Stop ();
+
+		Animation anim = GetComponent<PlayerController> ().anim;
+		if (anim.isPlaying)
+			anim.Stop ();
 		Cursor.visible = true;
 		print ("GameOver");
+
+		StartCoroutine ("ToMenu");
+	}
+
+	IEnumerator ToMenu() {
+		yield return new WaitForSeconds (1);
+		SceneManager.LoadScene (0);
+		simulate = true;
 	}
 }
