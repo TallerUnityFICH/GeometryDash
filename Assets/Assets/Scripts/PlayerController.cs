@@ -10,11 +10,7 @@ public class PlayerController : MonoBehaviour {
 	Rigidbody2D rb;
 
 	int collideCount = 0;
-<<<<<<< HEAD
-	bool jumping = false;
-=======
 	bool jumping = false, grounded = true;
->>>>>>> origin/master
 
 	void Start () {
 		rb = GetComponentInChildren<Rigidbody2D> ();
@@ -23,10 +19,7 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerEnter2D() {
 		if (collideCount == 0) {
-<<<<<<< HEAD
-=======
 			grounded = true;
->>>>>>> origin/master
 			if (jumping)
 				jumping = false;
 		}
@@ -36,10 +29,7 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerExit2D() {
 		collideCount--;
 		if (collideCount == 0) {
-<<<<<<< HEAD
-=======
 			grounded = false;
->>>>>>> origin/master
 			if (!jumping)
 				playAnimation ("Fall");
 		}
