@@ -9,26 +9,18 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject obstacles;
 
-	ObstaclesManager oManager;
-	//float respawnPoint;
-
 	void Start () {
 		global = this;
-		oManager = obstacles.GetComponent<ObstaclesManager> ();
-		//respawnPoint = GameObject.Find ("MapEnd").transform.localPosition.x + 10;
+		Cursor.visible = false;
 	}
 
 	void Update () {
-		if (oManager.lastObstacle == null || oManager.lastObstacle.obstacle == null)
-			oManager.SpawnObstacle (0, 12, 1, true);
-		//else if (oManager.lastObstacle.obstacle.transform.localPosition.x < respawnPoint) {
-		//	oManager.SpawnObstacle (Random.Range (1, 10), Random.Range (1, oManager.lastObstacle.height + 2), Random.Range (1, 4), false);
-		//}
 	}
 
 	public void GameOver() {
 		simulate = false;
 		GetComponent<PlayerController> ().anim.Stop ();
+		Cursor.visible = true;
 		print ("GameOver");
 	}
 }
