@@ -20,6 +20,10 @@ public class ObjectSlider : MonoBehaviour {
 			transform.position += step;
 			if (transform.localPosition.x < width)
 				Destroy (gameObject);
+		} 
+		else 
+		{
+			
 		}
 	}
 }

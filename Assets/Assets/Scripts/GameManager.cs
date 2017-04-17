@@ -6,33 +6,58 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
 
 	public static GameManager global;
-	public static bool simulate = true;
+	public static bool simulate;
+	public static bool loser;
 
 	public GameObject obstacles;
 
 	void Start () {
 		global = this;
 		Cursor.visible = false;
+		simulate = true;
+		loser = false;
 	}
 
 	void Update () {
+		if (Input.GetKeyDown(KeyCode.Escape)) 
+		{
+			PlayPause ();
+		}
 	}
 
 	public void GameOver() {
 		simulate = false;
-
-		Animation anim = GetComponent<PlayerController> ().anim;
-		if (anim.isPlaying)
-			anim.Stop ();
-		Cursor.visible = true;
+		GetComponent<PlayerController> ().anim.Stop ();
+		loser = true;
 		print ("GameOver");
-
-		StartCoroutine ("ToMenu");
 	}
 
-	IEnumerator ToMenu() {
-		yield return new WaitForSeconds (1);
-		SceneManager.LoadScene (0);
-		simulate = true;
+	public void PlayPause()
+	{
+		if (loser == false) 
+		{
+			if (simulate) 
+			{
+				simulate = false;
+				Cursor.visible = true;
+				GetComponent<PlayerController> ().anim.Stop ();
+			} 
+			else 
+			{
+				simulate = true;
+				Cursor.visible = false;
+				GetComponent<PlayerController> ().anim.Play ();
+			}
+		}
+	}
+
+	public void LoadScene (int sceneIndex)
+	{
+		SceneManager.LoadScene (sceneIndex);
+	}
+
+	public void quit()
+	{
+		Application.Quit ();
 	}
 }

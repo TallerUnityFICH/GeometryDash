@@ -167,9 +167,7 @@ public class ObstaclesManager : MonoBehaviour {
 		instance.transform.localPosition = new Vector3(x + xOffset, instance.transform.localPosition.y + yOffset, 0);
 		instance.GetComponent<ObjectSlider> ().ready = true;
 
-		if (lastObstacle == null || lastObstacle.obstacle == null || lastObstacle.obstacle.transform.localPosition.x < x + xOffset ||
-			(lastObstacle.obstacle.transform.localPosition.x == x + xOffset && lastObstacle.obstacle.transform.localPosition.y < instance.transform.localPosition.y))
-				lastObstacle = new LastObstacle(instance, height, spike);
+		lastObstacle = new LastObstacle(instance, height, spike);
 	}
 }
 
