@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
 
 	void Update () {
 		if (oManager.lastObstacle == null || oManager.lastObstacle.obstacle == null)
-			oManager.SpawnObstacle (0, 4, 2);
+			oManager.SpawnObstacle (0, 12, 1, true);
 		//else if (oManager.lastObstacle.obstacle.transform.localPosition.x < respawnPoint) {
 		//	oManager.SpawnObstacle (Random.Range (1, 10), Random.Range (1, oManager.lastObstacle.height + 2), Random.Range (1, 4), false);
 		//}
