@@ -12,7 +12,7 @@ public class ObjectSlider : MonoBehaviour {
 
 	void Start () {
 		step = new Vector3 (-speed/30, 0, 0);
-		width = GameObject.Find("MapEnd").transform.localPosition.x - GetComponent<Collider2D> ().bounds.extents.x - 0.5f;
+		width = GameObject.Find("MapEnd").transform.localPosition.x - GetComponent<Collider2D> ().bounds.extents.x + (Screen.width > 720 ? (-Screen.width / 180f + 4) : 0.5f);
 	}
 
 	void Update() {

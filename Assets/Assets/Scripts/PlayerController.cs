@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour {
 		if (!GameManager.simulate)
 			return;
 
-		if (Input.GetKey(KeyCode.Space))
+		if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow) || Input.GetMouseButton(0))
 			tryJump ();
 	}
 
