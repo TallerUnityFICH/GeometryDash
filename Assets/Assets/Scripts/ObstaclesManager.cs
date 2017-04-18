@@ -15,19 +15,24 @@ public class ObstaclesManager : MonoBehaviour {
 	GameObject obstacles;
 	int spawnChance = 15;
 	float offset = 0;
+	float startPos;
 	int extraOffset = 0;
+
+	float frameOffset = -1;
 
 	void Start() {
 		obstacles = GameObject.Find ("Obstacles");
 		offset = (Screen.width > 720 ? (-Screen.width / 180f + 4) : 0.5f);
 		if (offset < 0)
 			offset = -offset;
+		startPos = GameManager.global.mapEnd.position.x;
 	}
 
 	void Update() {
 		Flush ();
 
-		float startX = blockPrefab.transform.position.x + offset;
+		frameOffset = GameManager.global.mapEnd.position.x - startPos;
+		float startX = blockPrefab.transform.position.x + offset + frameOffset;
 		if (lastObstacle == null || lastObstacle.obstacle == null || lastObstacle.obstacle.transform.position.x + extraOffset < startX)
 			if (Random.Range (1, 600) % 100 < spawnChance)
 				Generate (startX);
@@ -58,6 +63,7 @@ public class ObstaclesManager : MonoBehaviour {
 
 		if (lastObstacle != null && lastObstacle.obstacle != null) {
 			startX = lastObstacle.obstacle.transform.position.x;
+
 			maxHeight += lastObstacle.height;
 
 			if (lastObstacle.spike)
@@ -145,7 +151,7 @@ public class ObstaclesManager : MonoBehaviour {
 	}
 
 	void Spawn(bool spike, float x, int xOffset, int yOffset, int height) {
-		if (x + xOffset > blockPrefab.transform.position.x + offset + 8) {
+		if (x + xOffset > blockPrefab.transform.position.x + offset + 8 + frameOffset) {
 			queue.Add(new QueueEntry(spike, xOffset, yOffset, height));
 			return;
 		}
