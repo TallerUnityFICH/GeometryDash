@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class loadscene : MonoBehaviour {
+public class LoadScene : MonoBehaviour {
 
-	public void LoadScene (int sceneIndex)
-	{
+	public void Load (int sceneIndex) {
 		SceneManager.LoadScene (sceneIndex);
 	}
-	public void quit()
-	{
+
+	public void Quit() {
 		Application.Quit ();
 	}
 }
