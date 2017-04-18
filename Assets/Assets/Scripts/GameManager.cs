@@ -7,7 +7,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
 
 	public static GameManager global;
-	public static bool simulate = true;
+	public static bool simulate;
+	public static bool loser;
+	public static bool canRestart = false;
 
 	public GameObject obstacles;
 	public Sprite[] sprite;
@@ -18,6 +20,9 @@ public class GameManager : MonoBehaviour {
 	SpriteRenderer render;
 	SpriteRenderer childRender;
 	Transform child;
+	Animation childAnim;
+
+	PlayerController controller;
 
 	Color alpha;
 	Vector3 scale = new Vector3 (0.02f, 0.02f, 0);
@@ -30,6 +35,9 @@ public class GameManager : MonoBehaviour {
 		global = this;
 		Cursor.visible = false;
 
+		simulate = true;
+		loser = false;
+
 		animDelay = animSpeed / sprite.Length;
 
 		rotation /= animSpeed*2;
@@ -38,6 +46,8 @@ public class GameManager : MonoBehaviour {
 		render = GetComponent<SpriteRenderer> ();
 		child = transform.GetChild (0);
 		childRender = child.GetComponent<SpriteRenderer> ();
+		childAnim = child.GetComponent<Animation> ();
+		controller = GetComponent<PlayerController> ();
 
 		alpha = childRender.color;
 	}
@@ -60,8 +70,10 @@ public class GameManager : MonoBehaviour {
 				alpha.a -= 0.04f / animSpeed;
 				childRender.color = alpha;
 				child.localScale -= scale * 2;
-			} else if (animIndex == 0)
+			} else if (animIndex == 0) {
 				render.sprite = null;
+				canRestart = true;
+			}
 		}
 	}
 
@@ -77,25 +89,28 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void GameOver() {
-		simulate = false;
+		controller.showMenu (true);
 
-		Animation anim = GetComponent<PlayerController> ().anim;
-		if (anim.isPlaying)
-			anim.Stop ();
+		simulate = false;
+		childAnim.Stop ();
 		Cursor.visible = true;
 
 		GetComponent<Rigidbody2D> ().simulated = false;
 		child.GetComponent<Collider2D> ().enabled = false;
 		animIndex = sprite.Length;
-		
-		print ("GameOver");
 
-		StartCoroutine ("ToMenu");
+		loser = true;
 	}
 
-	IEnumerator ToMenu() {
-	yield return new WaitForSeconds (0.75f);
-		SceneManager.LoadScene (0);
-		simulate = true;
+	public void restart() {
+		if (canRestart) {
+			global.controller.showMenu (false);
+			global.StartCoroutine ("delayReset");
+		}
+	}
+
+	IEnumerator delayReset() {
+		yield return new WaitForSeconds (1.4f);
+		SceneManager.LoadScene (2);
 	}
 }

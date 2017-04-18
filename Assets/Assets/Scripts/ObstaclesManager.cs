@@ -27,8 +27,8 @@ public class ObstaclesManager : MonoBehaviour {
 	void Update() {
 		Flush ();
 
-		float startX = blockPrefab.transform.localPosition.x + offset;
-		if (lastObstacle == null || lastObstacle.obstacle == null || lastObstacle.obstacle.transform.localPosition.x + extraOffset < startX)
+		float startX = blockPrefab.transform.position.x + offset;
+		if (lastObstacle == null || lastObstacle.obstacle == null || lastObstacle.obstacle.transform.position.x + extraOffset < startX)
 			if (Random.Range (1, 600) % 100 < spawnChance)
 				Generate (startX);
 			else
@@ -36,9 +36,9 @@ public class ObstaclesManager : MonoBehaviour {
 	}
 
 	void Flush() {
-		float xTop = blockPrefab.transform.localPosition.x + offset;
+		float xTop = blockPrefab.transform.position.x + offset;
 		float startX = (lastObstacle == null || lastObstacle.obstacle == null) ?
-			xTop : lastObstacle.obstacle.transform.localPosition.x;
+			xTop : lastObstacle.obstacle.transform.position.x;
 		xTop += 6;
 
 		QueueEntry[] clone = new QueueEntry[queue.Count];
@@ -57,7 +57,7 @@ public class ObstaclesManager : MonoBehaviour {
 		int maxHeight = 2;
 
 		if (lastObstacle != null && lastObstacle.obstacle != null) {
-			startX = lastObstacle.obstacle.transform.localPosition.x;
+			startX = lastObstacle.obstacle.transform.position.x;
 			maxHeight += lastObstacle.height;
 
 			if (lastObstacle.spike)
@@ -145,7 +145,7 @@ public class ObstaclesManager : MonoBehaviour {
 	}
 
 	void Spawn(bool spike, float x, int xOffset, int yOffset, int height) {
-		if (x + xOffset > blockPrefab.transform.localPosition.x + offset + 8) {
+		if (x + xOffset > blockPrefab.transform.position.x + offset + 8) {
 			queue.Add(new QueueEntry(spike, xOffset, yOffset, height));
 			return;
 		}
@@ -153,12 +153,9 @@ public class ObstaclesManager : MonoBehaviour {
 		GameObject instance = Instantiate (spike ? spikePrefab : blockPrefab);
 
 		instance.transform.parent = obstacles.transform;
-		instance.transform.localPosition = new Vector3(x + xOffset, instance.transform.localPosition.y + yOffset, 0);
-		instance.GetComponent<ObjectSlider> ().ready = true;
+		instance.transform.position = new Vector3(x + xOffset, instance.transform.position.y + yOffset, 0);
 
-		if (lastObstacle == null || lastObstacle.obstacle == null || lastObstacle.obstacle.transform.localPosition.x < x + xOffset ||
-			(lastObstacle.obstacle.transform.localPosition.x == x + xOffset && lastObstacle.obstacle.transform.localPosition.y < instance.transform.localPosition.y))
-				lastObstacle = new LastObstacle(instance, height, spike);
+		lastObstacle = new LastObstacle(instance, height, spike);
 	}
 }
 
