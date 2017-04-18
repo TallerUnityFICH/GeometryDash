@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
@@ -11,10 +11,15 @@ public class GameManager : MonoBehaviour {
 	public static bool loser;
 	public static bool canRestart = false;
 
+	public GameObject background;
+	public GameObject floor;
+
 	public GameObject obstacles;
 	public Sprite[] sprite;
 
 	public float animSpeed = 1;
+
+	public Transform mapEnd;
 
 	float lastUpdate = 0;
 	SpriteRenderer render;
@@ -48,6 +53,10 @@ public class GameManager : MonoBehaviour {
 		childRender = child.GetComponent<SpriteRenderer> ();
 		childAnim = child.GetComponent<Animation> ();
 		controller = GetComponent<PlayerController> ();
+
+		mapEnd = GameObject.Find ("MapEnd").transform;
+
+		setColor (new Color(Random.Range(0, 255) / 255f, Random.Range(0, 255) / 255f, Random.Range(0, 255) / 255f));
 
 		alpha = childRender.color;
 	}
@@ -83,7 +92,7 @@ public class GameManager : MonoBehaviour {
 			return;
 		}
 
-		lifes = 2;
+		lifes = 1;
 
 		GameOver ();
 	}
@@ -107,6 +116,11 @@ public class GameManager : MonoBehaviour {
 			global.controller.showMenu (false);
 			global.StartCoroutine ("delayReset");
 		}
+	}
+
+	public void setColor(Color color) {
+		background.GetComponent<RawImage> ().color = color;
+		floor.GetComponent<FloorGenerator> ().updateColor (new Color (1 - color.r, 1 - color.g, 1 - color.b));
 	}
 
 	IEnumerator delayReset() {

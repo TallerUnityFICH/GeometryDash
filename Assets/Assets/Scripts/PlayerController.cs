@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void tryJump() {
-		if (rb.velocity.y == 0) {
+		if (rb.velocity.y == 0 || (!jumping && rb.velocity.y > -0.1f && rb.velocity.y < 0.1f)) {
 			rb.velocity = Vector3.up * jumpHeight;
 			playAnimation ("Jump");
 			jumping = true;
