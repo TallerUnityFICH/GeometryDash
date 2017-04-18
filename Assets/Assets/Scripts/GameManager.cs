@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
 	Vector3 rotation = new Vector3 (0, 0, 2);
 	float animDelay;
 	int animIndex = 0;
-	public static int lifes = 1;
+	int lifes = 1;
 
 	void Start () {
 		global = this;
@@ -82,6 +82,9 @@ public class GameManager : MonoBehaviour {
 			lifes--;
 			return;
 		}
+
+		lifes = 2;
+
 		GameOver ();
 	}
 
@@ -103,7 +106,6 @@ public class GameManager : MonoBehaviour {
 		if (canRestart) {
 			global.controller.showMenu (false);
 			global.StartCoroutine ("delayReset");
-			lifes = 1;
 		}
 	}
 
