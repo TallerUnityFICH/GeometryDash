@@ -7,13 +7,14 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
 
 	public static GameManager global;
-	public static bool simulate;
+	public static bool simulate = true;
 	public static bool loser;
 	public static bool canRestart = false;
 
 	public GameObject background;
 	public GameObject floor;
 
+	public GameObject damage;
 	public GameObject obstacles;
 	public Sprite[] sprite;
 
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour {
 	SpriteRenderer childRender;
 	Transform child;
 	Animation childAnim;
+	Animation damageAnim;
 
 	PlayerController controller;
 
@@ -53,10 +55,12 @@ public class GameManager : MonoBehaviour {
 		childRender = child.GetComponent<SpriteRenderer> ();
 		childAnim = child.GetComponent<Animation> ();
 		controller = GetComponent<PlayerController> ();
+		damageAnim = damage.transform.GetComponent<Animation> ();
 
 		mapEnd = GameObject.Find ("MapEnd").transform;
 
-		setColor (new Color(Random.Range(0, 255) / 255f, Random.Range(0, 255) / 255f, Random.Range(0, 255) / 255f));
+		int rand = Random.Range (0, 215);
+		setColor (new Color(1 - rand * 3f % 255f / 255, 1 - rand / 255f, 1 - rand * 2f % 255f / 255));
 
 		alpha = childRender.color;
 	}
@@ -87,6 +91,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Damage(bool fatallity) {
+		damageAnim.Play ("Damage");
 		if (!fatallity && lifes > 0) {
 			lifes--;
 			return;
@@ -120,7 +125,7 @@ public class GameManager : MonoBehaviour {
 
 	public void setColor(Color color) {
 		background.GetComponent<RawImage> ().color = color;
-		floor.GetComponent<FloorGenerator> ().updateColor (new Color (1 - color.r, 1 - color.g, 1 - color.b));
+		floor.GetComponent<FloorGenerator> ().updateColor (new Color ( (1 - color.r) * 1, (1 - color.g) * 2, 1 - color.b));
 	}
 
 	IEnumerator delayReset() {
