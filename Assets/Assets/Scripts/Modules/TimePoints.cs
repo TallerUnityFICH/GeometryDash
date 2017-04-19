@@ -15,7 +15,7 @@ public class TimePoints : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (GameManager.simulate) {
+		if (FeaturesEnabler.points && GameManager.simulate) {
 			if (aux < 1 || cont > 9)  {
 				m_Text.text = "Puntaje: " + aux.ToString ();
 

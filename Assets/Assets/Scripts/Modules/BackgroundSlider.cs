@@ -8,7 +8,7 @@ public class BackgroundSlider : MonoBehaviour {
 	public float scrollSpeed = 1;
 	private Rect savedOffset;
 
-	float time = 0;
+	public static float time = 0;
 
 	void Start () {
 		savedOffset = GetComponent<RawImage>().uvRect;

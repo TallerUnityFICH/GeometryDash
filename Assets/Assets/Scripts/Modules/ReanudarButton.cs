@@ -7,7 +7,7 @@ public class ReanudarButton : MonoBehaviour {
 	public bool shouldCheck = false;
 
 	void Update() {
-		if (shouldCheck) {
+		if (FeaturesEnabler.resume && shouldCheck) {
 			check ();
 			shouldCheck = false;
 		}

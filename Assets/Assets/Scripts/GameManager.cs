@@ -36,7 +36,9 @@ public class GameManager : MonoBehaviour {
 	Vector3 rotation = new Vector3 (0, 0, 2);
 	float animDelay;
 	int animIndex = 0;
-	int lifes = 1;
+
+	public static int maxLifes = 2;
+	public static int lifes = maxLifes;
 
 	void Start () {
 		global = this;
@@ -59,14 +61,29 @@ public class GameManager : MonoBehaviour {
 
 		mapEnd = GameObject.Find ("MapEnd").transform;
 
-		int rand = Random.Range (0, 215);
-		setColor (new Color(1 - rand * 3f % 255f / 255, 1 - rand / 255f, 1 - rand * 2f % 255f / 255));
+		if (FeaturesEnabler.color) {
+			int rand = Random.Range (0, 215);
+			setColor (new Color (1 - rand * 3f % 255f / 255, 1 - rand / 255f, 1 - rand * 2f % 255f / 255));
+		}
 
 		alpha = childRender.color;
+
+		if (!FeaturesEnabler.health)
+			GameObject.Find ("Health Bar").SetActive (false);
+	}
+
+	public void resetLife() {
+		lifes = maxLifes;
 	}
 
 	void Update () {
 		if (animIndex > 0) {
+			if (!FeaturesEnabler.death) {
+				childRender.enabled = false;
+				canRestart = true;
+				return;
+			}
+
 			transform.Rotate (rotation);
 			transform.localScale += scale;
 			if (lastUpdate == 0 || Time.time - lastUpdate > animDelay) {
@@ -92,13 +109,11 @@ public class GameManager : MonoBehaviour {
 
 	public void Damage(bool fatallity) {
 		damageAnim.Play ("Damage");
-		if (!fatallity && lifes > 0) {
+		if (FeaturesEnabler.health && !fatallity && lifes > 0) {
 			lifes--;
 			return;
 		}
-
-		lifes = 1;
-
+		lifes = -1;
 		GameOver ();
 	}
 
@@ -120,6 +135,7 @@ public class GameManager : MonoBehaviour {
 		if (canRestart) {
 			global.controller.showMenu (false);
 			global.StartCoroutine ("delayReset");
+			lifes = maxLifes;
 		}
 	}
 
