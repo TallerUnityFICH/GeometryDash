@@ -9,7 +9,7 @@ public class FloorGenerator : MonoBehaviour {
 	List<GameObject> floorCache = new List<GameObject>();
 	List<GameObject> usedFloors = new List<GameObject>();
 
-	Color color = new Color(1, 1, 1, 0.6f);
+	Color color = new Color(1, 1, 1, 1f);
 	GameObject lastFloor;
 	float width;
 
@@ -18,6 +18,7 @@ public class FloorGenerator : MonoBehaviour {
 		usedFloors.Remove (floor);
 		floorCache.Add (floor);
 
+		Generate ();
 		Generate ();
 	}
 
